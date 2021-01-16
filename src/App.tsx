@@ -1,26 +1,35 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from 'react-router-dom';
+import {Provider} from 'react-redux';
+import store from './store';
+import {ProtectedRoute, ProvideAuth} from './Auth';
 
-function App() {
+import Login from './page/Login';
+import Todo from './page/Todo';
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ProvideAuth>
+      <Provider store={store}>
+        <Router>
+          <div>
+            <Switch>
+              <Route path="/login">
+                <Login/>
+              </Route>
+              <ProtectedRoute path="/">
+                <Todo/>
+              </ProtectedRoute>
+            </Switch>
+          </div>
+        </Router>
+      </Provider>
+    </ProvideAuth>
   );
-}
+};
 
 export default App;
